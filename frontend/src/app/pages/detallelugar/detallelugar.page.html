@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ lugar?.nombre }}</ion-title>
+    
+    <ion-buttons slot="start">
+      <ion-back-button 
+      defaultHref="/lugares"
+      text="Regresar"
+      color="primary">
+      </ion-back-button>
+      
+    </ion-buttons>
+    <ion-button slot="end" (click)="mostrarFormularioComentario()">
+      <ion-icon name="chatbubbles-outline">
+      </ion-icon></ion-button>
+
+      <ion-button slot="end" (click)="confirmarEliminacion()">
+        <ion-icon name="close-circle-outline">
+        </ion-icon>
+      </ion-button>
+  </ion-toolbar>
+  
+</ion-header>
+
+<ion-content>
+  
+  <img [src]="lugar?.imagen" />
+  <ion-card-title>Comentarios</ion-card-title>
+  <ion-item *ngFor="let comentario of comentarios">
+    @if(comentario.usuario_imagen){
+      <ion-avatar>
+        <img  src={{comentario.usuario_imagen}} />
+      </ion-avatar>
+    
+    }@else {
+      <ion-avatar>
+        <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+      </ion-avatar>
+    }
+    <ion-label>
+      <h2>{{ comentario.usuario_nombre }}</h2>
+      <p>{{ comentario.comentario }}</p>
+    </ion-label>
+   
+  </ion-item>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [routerLink]="['/modificarlugar', lugar?.lugar_codigo]" >
+      <ion-icon name="pencil-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+

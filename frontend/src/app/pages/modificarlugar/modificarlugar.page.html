@@ -1,0 +1,43 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Modificar Lugar</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Modificar Lugar</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <form *ngIf="lugar">
+    <ion-item>
+      <ion-label position="floating">Título</ion-label>
+      <ion-input [(ngModel)]="lugar.nombre" name="titulo" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Imagen</ion-label>
+      <ion-input [(ngModel)]="lugar.imagen" name="imagen" required></ion-input>
+    </ion-item>
+
+    <ion-title size="large">Comentarios</ion-title>
+    <ion-list *ngIf="comentariosEditando.length > 0">
+      <ion-item *ngFor="let comentario of comentariosEditando; let i = index">
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input readonly [(ngModel)]="comentario.usuario_nombre" name="nombre-{{i}}"></ion-input>
+      
+        <ion-label position="floating">Comentario</ion-label>
+        <ion-input [(ngModel)]="comentario.comentario" name="comentario-{{i}}"></ion-input>
+      
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+          <ion-button color="danger" (click)="eliminarComentario(i)">Eliminar</ion-button>
+          <ion-button color="primary" (click)="modificarComentario(comentario)">Modificar</ion-button>
+        </div>
+      </ion-item>
+      
+    </ion-list>
+
+    <ion-button expand="full" (click)="guardarCambios()">Guardar Cambios</ion-button>
+  </form>
+</ion-content>

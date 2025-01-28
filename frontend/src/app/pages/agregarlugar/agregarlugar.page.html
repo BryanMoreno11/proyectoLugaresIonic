@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Agregar Lugar</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="lugarForm">
+    <ion-item>
+      <ion-label position="floating">Título</ion-label>
+      <ion-input formControlName="nombre"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">URL de la Imagen</ion-label>
+      <ion-input formControlName="imagen"></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" (click)="saveLugar()">Guardar</ion-button>
+  </form>
+</ion-content>
+

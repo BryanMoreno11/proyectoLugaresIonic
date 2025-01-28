@@ -1,0 +1,52 @@
+<ion-header>
+  
+
+
+
+
+    
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button>
+        <ion-icon name="airplane"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Lugares</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon name="globe"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-list>
+    <ion-item>
+      <ion-input (input)="buscarLugar()"      [(ngModel)]="lugarBuscado" label="Buscar ciudad"></ion-input>
+    </ion-item>
+  </ion-list>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <app-loading *ngIf="isLoading"></app-loading>
+
+  <div *ngIf="!isLoading">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6" *ngFor="let lugar of lugaresAux" (click)="verDetalle(lugar.lugar_codigo!)">
+          <ion-card>
+            <img [src]="lugar.imagen" />
+            <ion-card-header>
+              <ion-card-title>{{ lugar.nombre }}</ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button (click)="abrirModal()">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+
+</ion-content>
