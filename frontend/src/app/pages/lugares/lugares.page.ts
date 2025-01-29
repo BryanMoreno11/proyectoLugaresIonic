@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonIcon, IonFabButton, IonGrid, IonRow, IonCol, IonCardHeader, IonCard, IonCardTitle, IonFab, IonItem, IonList, IonAvatar, IonImg, IonLabel,
-  IonInput
+  IonInput, 
  } from '@ionic/angular/standalone';
 import { Lugar } from 'src/app/models/Lugar';
 import { Subscription } from 'rxjs';
@@ -13,13 +13,15 @@ import { ModalController } from '@ionic/angular/standalone';
 import { addOutline, airplane, cogSharp, globe } from 'ionicons/icons';
 import { AgregarlugarPage } from '../agregarlugar/agregarlugar.page';
 import { LoadingComponent } from 'src/app/Componentes/loading/loading.component';
+import { Usuario } from 'src/app/models/Usuario';
+import { UsuarioService } from 'src/app/service/usuario.service';
 @Component({
   selector: 'app-lugares',
   templateUrl: './lugares.page.html',
   styleUrls: ['./lugares.page.scss'],
   standalone: true,
   imports: [IonFab, IonFabButton, IonIcon, IonContent, IonHeader, IonTitle,IonGrid, IonCard,IonCardHeader,IonCardTitle,IonRow,IonCol,IonToolbar,IonButtons,IonButton ,CommonModule, FormsModule, IonList, IonItem, IonInput,
-    LoadingComponent
+    LoadingComponent,
   ]
 })
 export class LugaresPage implements OnInit 
@@ -30,10 +32,13 @@ export class LugaresPage implements OnInit
   lugaresAux: Lugar[] = [];
   lugarBuscado:string="";
   isLoading = true;
+  usuario:Usuario= {} as Usuario;
 
 
 
-  constructor( private route: ActivatedRoute,private router: Router, private lugaresService: LugaresService ,private modalCtrl: ModalController)
+  constructor( private route: ActivatedRoute,private router: Router, private lugaresService: LugaresService ,private modalCtrl: ModalController,
+    private usuariosService:UsuarioService
+  )
    {
        addIcons({airplane,globe,addOutline});
    }
@@ -41,9 +46,15 @@ export class LugaresPage implements OnInit
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       this.loadData();
-      });
+      this.usuariosService.getUsuarioActual().subscribe(
+        (usuario: Usuario) => {
+          this.usuario = usuario;
+          console.log('Usuario actual:', this.usuario);
+        }
+      );
     }
-
+  )
+  }
   
   async abrirModal() {
     const modal = await this.modalCtrl.create({

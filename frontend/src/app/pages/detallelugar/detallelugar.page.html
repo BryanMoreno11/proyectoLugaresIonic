@@ -13,11 +13,13 @@
     <ion-button slot="end" (click)="mostrarFormularioComentario()">
       <ion-icon name="chatbubbles-outline">
       </ion-icon></ion-button>
-
-      <ion-button slot="end" (click)="confirmarEliminacion()">
-        <ion-icon name="close-circle-outline">
-        </ion-icon>
-      </ion-button>
+      @if(usuario.tipo=="admin"){
+        <ion-button slot="end" (click)="confirmarEliminacion()">
+          <ion-icon name="close-circle-outline">
+          </ion-icon>
+        </ion-button>
+      }
+      
   </ion-toolbar>
   
 </ion-header>

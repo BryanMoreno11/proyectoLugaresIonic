@@ -11,6 +11,8 @@ import { chatbubblesOutline, closeCircleOutline, pencilOutline } from 'ionicons/
 import { IonAvatar, IonGrid, IonRow , IonCol} from '@ionic/angular/standalone';
 import { ComentariosService } from 'src/app/service/comentarios.service';
 import { Comentario } from 'src/app/models/Comentario';
+import { Usuario } from 'src/app/models/Usuario';
+import { UsuarioService } from 'src/app/service/usuario.service';
 
 @Component({
   selector: 'app-detallelugar',
@@ -31,6 +33,8 @@ export class DetallelugarPage implements OnInit {
     usuario_imagen: '',
    };
   comentarios: Comentario[] = [];
+  usuario:Usuario= {} as Usuario;
+
 
   private lugarSubscription?: Subscription;
   constructor(
@@ -38,21 +42,28 @@ export class DetallelugarPage implements OnInit {
     private router: Router,
     private lugaresService: LugaresService,
     private alertController: AlertController,
-    private  comentariosService:ComentariosService
+    private  comentariosService:ComentariosService,
+    private usuariosService:UsuarioService
     
   ) {
     addIcons({pencilOutline,closeCircleOutline,chatbubblesOutline});
   }
 
   ngOnInit() {
+    this.usuariosService.getUsuarioActual().subscribe(
+      (usuario: Usuario) => {
+        this.usuario = usuario;
+        console.log('Usuario actual:', this.usuario);
+      }
+    );
     this.route.paramMap.subscribe(params => {
       const lugarIdParam = params.get('id');
-      if (lugarIdParam !== null) {
+      if (lugarIdParam !== null && this.usuario) {
         const lugarId = +lugarIdParam;
         this.lugaresService.getLugar(lugarId).subscribe(lugar => {
           this.lugar = lugar;
           this.comentario.lugar_codigo = this.lugar.lugar_codigo!;
-          this.comentario.usuario_codigo = 1;
+          this.comentario.usuario_codigo = this.usuario.usuario_codigo;
         }, error => {
           this.router.navigate(['/lugares']);
         });
@@ -149,5 +160,6 @@ obtenerComentarios(lugar:number):void{
      
     }
   }
+  
 
 }

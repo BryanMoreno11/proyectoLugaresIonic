@@ -14,11 +14,11 @@
   <form *ngIf="lugar">
     <ion-item>
       <ion-label position="floating">Título</ion-label>
-      <ion-input [(ngModel)]="lugar.nombre" name="titulo" required></ion-input>
+      <ion-input [readonly]="usuario.tipo=='cliente'" [(ngModel)]="lugar.nombre" name="titulo" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Imagen</ion-label>
-      <ion-input [(ngModel)]="lugar.imagen" name="imagen" required></ion-input>
+      <ion-input [readonly]="usuario.tipo=='cliente'" [(ngModel)]="lugar.imagen" name="imagen" required></ion-input>
     </ion-item>
 
     <ion-title size="large">Comentarios</ion-title>
@@ -28,12 +28,16 @@
         <ion-input readonly [(ngModel)]="comentario.usuario_nombre" name="nombre-{{i}}"></ion-input>
       
         <ion-label position="floating">Comentario</ion-label>
-        <ion-input [(ngModel)]="comentario.comentario" name="comentario-{{i}}"></ion-input>
-      
-        <div style="display: flex; gap: 10px; margin-top: 10px;">
-          <ion-button color="danger" (click)="eliminarComentario(i)">Eliminar</ion-button>
-          <ion-button color="primary" (click)="modificarComentario(comentario)">Modificar</ion-button>
-        </div>
+        <ion-input [readonly]="usuario.usuario_codigo!=comentario.usuario_codigo"  [(ngModel)]="comentario.comentario" name="comentario-{{i}}"></ion-input>
+
+
+        @if(usuario.usuario_codigo==comentario.usuario_codigo){
+          <div style="display: flex; gap: 10px; margin-top: 10px;">
+            <ion-button color="danger" (click)="eliminarComentario(i)">Eliminar</ion-button>
+            <ion-button color="primary" (click)="modificarComentario(comentario)">Modificar</ion-button>
+          </div>
+        }
+        
       </ion-item>
       
     </ion-list>

@@ -1,4 +1,11 @@
 const pool = require("../database");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+
+// Función para generar un token JWT
+function generateToken(user) {
+    return jwt.sign({ id: user.usuario_codigo, tipo: user.tipo }, 'tu_secreto_jwt', { expiresIn: '1h' });
+}
 
 // Obtener un usuario por ID
 async function getUsuario(req, res) {
@@ -38,7 +45,6 @@ async function createUsuario(req, res) {
     const queryCheck = 'SELECT * FROM usuario WHERE correo=$1';
     const queryInsert = 'INSERT INTO usuario (nombre, correo, contrasenia, imagen, tipo) VALUES ($1, $2, $3, $4, $5)';
     const valuesCheck = [correo];
-    const valuesInsert = [nombre, correo, contrasenia, imagen, tipo];
 
     try {
         const client = await pool.connect();
@@ -49,6 +55,11 @@ async function createUsuario(req, res) {
             return res.status(400).json({ message: 'El correo ya está registrado' });
         }
 
+        // Hashear la contraseña antes de almacenarla
+        const saltRounds = 10; // Número de rondas de hashing
+        const hashedPassword = await bcrypt.hash(contrasenia, saltRounds);
+
+        const valuesInsert = [nombre, correo, hashedPassword, imagen, tipo];
         const insertResult = await client.query(queryInsert, valuesInsert);
         client.release();
 
@@ -123,10 +134,50 @@ async function deleteUsuario(req, res) {
 // Iniciar sesión
 async function iniciarSesion(req, res) {
     const { correo, contrasenia } = req.body;
-    const query = 'SELECT * FROM usuario WHERE correo=$1 AND contrasenia=$2';
-    const values = [correo, contrasenia];
+    const query = 'SELECT * FROM usuario WHERE correo=$1';
+    const values = [correo];
 
     try {
+        const client = await pool.connect();
+        const result = await client.query(query, values);
+        client.release();
+        console.log("llamda correcta");
+
+        if (result.rowCount > 0) {
+            const user = result.rows[0];
+            const validPassword = await bcrypt.compare(contrasenia, user.contrasenia);
+
+            if (validPassword) {
+                const token = generateToken(user);
+                res.status(200).json({ token });
+            } else {
+                res.status(401).json({ message: 'Credenciales incorrectas' });
+            }
+        } else {
+            res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+    } catch (err) {
+        res.status(500).json({ error: "Error en el servidor",
+          
+         }
+
+        );
+    }
+}
+
+
+async function getUsuarioActual(req, res) {
+
+    const token = req.headers['authorization'];
+    if (!token) {
+        return res.status(401).json({ message: 'No autorizado' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, 'tu_secreto_jwt');
+        const query = 'SELECT * FROM usuario WHERE usuario_codigo=$1';
+        const values = [decoded.id];
+
         const client = await pool.connect();
         const result = await client.query(query, values);
         client.release();
@@ -134,15 +185,18 @@ async function iniciarSesion(req, res) {
         if (result.rowCount > 0) {
             res.status(200).json(result.rows[0]);
         } else {
-            res.status(404).json({ message: 'Credenciales incorrectas' });
+            res.status(404).json({ message: 'Usuario no encontrado' });
         }
     } catch (err) {
         res.status(500).json({ error: "Error en el servidor" });
     }
 }
 
+
+
 module.exports = {
     getUsuario,
+    getUsuarioActual,
     getUsuarios,
     createUsuario,
     updateUsuario,

@@ -1,7 +1,4 @@
 
-
-
-
   export interface Lugar {
     lugar_codigo?: number;        
     nombre: string;             

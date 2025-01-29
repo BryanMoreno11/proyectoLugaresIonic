@@ -9,6 +9,8 @@ import { Comentario } from 'src/app/models/Comentario';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LugaresService } from 'src/app/service/lugares.service';
 import { ComentariosService } from 'src/app/service/comentarios.service';
+import { UsuarioService } from 'src/app/service/usuario.service';
+import { Usuario } from 'src/app/models/Usuario';
 
 @Component({
   selector: 'app-modificarlugar',
@@ -23,16 +25,26 @@ export class ModificarlugarPage implements OnInit {
 
   lugar?: Lugar;
   comentariosEditando: Comentario[] = [];
+  usuario:Usuario= {} as Usuario;
+
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private lugaresService: LugaresService,
     private comentariosService: ComentariosService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private usuariosService:UsuarioService
+
   ) { }
 
   ngOnInit() {
+    this.usuariosService.getUsuarioActual().subscribe(
+      (usuario: Usuario) => {
+        this.usuario = usuario;
+        console.log('Usuario actual:', this.usuario);
+      }
+    );
     this.route.paramMap.subscribe(params => {
       const lugarIdParam = this.route.snapshot.paramMap.get('id');
       if (lugarIdParam !== null) {
