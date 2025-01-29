@@ -35,6 +35,18 @@ export class UsuarioService {
 
 }
 
+getUsuarios(): Observable<Usuario[]> {
+  return this.http.get<Usuario[]>(`${this.urlBase}/usuarios`);
+}
+
+updateUsuario(usuario: Usuario): Observable<any> {
+  return this.http.put(`${this.urlBase}/usuario/${usuario.usuario_codigo}`, usuario);
+}
+
+deleteUsuario(usuario_codigo: number): Observable<any> {
+  return this.http.delete(`${this.urlBase}/usuario/${usuario_codigo}`);
+}
+
 cerrarSesion(): void {
   localStorage.removeItem('token');
 }

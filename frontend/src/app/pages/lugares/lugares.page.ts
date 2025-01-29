@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonIcon, IonFabButton, IonGrid, IonRow, IonCol, IonCardHeader, IonCard, IonCardTitle, IonFab, IonItem, IonList, IonAvatar, IonImg, IonLabel,
-  IonInput, 
+  IonInput,
+  IonMenu,
+  IonMenuButton, 
  } from '@ionic/angular/standalone';
 import { Lugar } from 'src/app/models/Lugar';
 import { Subscription } from 'rxjs';
@@ -21,7 +23,7 @@ import { UsuarioService } from 'src/app/service/usuario.service';
   styleUrls: ['./lugares.page.scss'],
   standalone: true,
   imports: [IonFab, IonFabButton, IonIcon, IonContent, IonHeader, IonTitle,IonGrid, IonCard,IonCardHeader,IonCardTitle,IonRow,IonCol,IonToolbar,IonButtons,IonButton ,CommonModule, FormsModule, IonList, IonItem, IonInput,
-    LoadingComponent,
+    LoadingComponent, IonLabel, IonMenu, IonMenuButton
   ]
 })
 export class LugaresPage implements OnInit 
@@ -105,6 +107,14 @@ export class LugaresPage implements OnInit
       }
     );
 
+  }
+  cerrarSesion() {
+    this.usuariosService.cerrarSesion();
+    this.router.navigate(['/login']);
+  }
+
+  irAAdministrarUsuarios() {
+    this.router.navigate(['/admin-usuarios']);
   }
 
 }

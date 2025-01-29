@@ -64,6 +64,7 @@ export class DetallelugarPage implements OnInit {
           this.lugar = lugar;
           this.comentario.lugar_codigo = this.lugar.lugar_codigo!;
           this.comentario.usuario_codigo = this.usuario.usuario_codigo;
+          console.log("el comentario es ", this.comentario);
         }, error => {
           this.router.navigate(['/lugares']);
         });
@@ -107,6 +108,7 @@ obtenerComentarios(lugar:number):void{
           text: 'Agregar',
           handler: (data) => {
             this.comentario.comentario = data.comentario;
+            this.comentario.usuario_codigo = this.usuario.usuario_codigo;
             this.agregarComentario(this.comentario);
           }
         }

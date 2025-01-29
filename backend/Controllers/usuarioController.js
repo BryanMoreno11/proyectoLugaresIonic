@@ -82,9 +82,13 @@ async function updateUsuario(req, res) {
     const queryCheck = 'SELECT * FROM usuario WHERE correo=$1 AND usuario_codigo!=$2';
     const valuesCheck = [correo, id];
 
+    // Hashear la contraseña antes de almacenarla
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(contrasenia, saltRounds);
+
     // Query para actualizar el usuario
     const queryUpdate = 'UPDATE usuario SET nombre=$2, correo=$3, contrasenia=$4, imagen=$5, tipo=$6 WHERE usuario_codigo=$1';
-    const valuesUpdate = [id, nombre, correo, contrasenia, imagen, tipo];
+    const valuesUpdate = [id, nombre, correo, hashedPassword, imagen, tipo];
 
     try {
         const client = await pool.connect();
@@ -109,6 +113,7 @@ async function updateUsuario(req, res) {
         res.status(500).json({ error: "Error en el servidor" });
     }
 }
+
 
 // Eliminar un usuario por ID
 async function deleteUsuario(req, res) {
