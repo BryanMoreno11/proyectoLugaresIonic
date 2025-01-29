@@ -18,11 +18,11 @@ export class AdminGuard implements CanActivate {
       if (usuario && usuario.tipo === 'admin') {
         return true; // Permite el acceso
       } else {
-        this.router.navigate(['/login']); 
+        this.router.navigate(['/lugares']); 
         return false; // Deniega el acceso
       }
     } catch (error) {
-      this.router.navigate(['/login']); 
+      this.router.navigate(['/lugares']); 
       return false; 
     }
   }

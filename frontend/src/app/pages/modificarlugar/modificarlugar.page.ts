@@ -61,7 +61,7 @@ export class ModificarlugarPage implements OnInit {
   }
 
   guardarCambios() {
-    if (this.lugar) {
+    if (this.lugar?.nombre.trim() !== '' && this.lugar?.imagen! && this.lugar.imagen.trim() !== '') {
       console.log('Antes de actualizar:', this.comentariosEditando);
       this.lugaresService.updateLugar(this.lugar, this.lugar.lugar_codigo! ).subscribe(
         (res) => {

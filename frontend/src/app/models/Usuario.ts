@@ -6,5 +6,5 @@ export interface Usuario {
     contrasenia: string;
     fecha_creacion: Date;
     imagen: string;
-    tipo: 'cliente' | 'admin';
+    tipo: string;
 }

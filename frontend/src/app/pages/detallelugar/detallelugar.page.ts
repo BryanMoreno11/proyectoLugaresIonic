@@ -118,7 +118,7 @@ obtenerComentarios(lugar:number):void{
     await alert.present();
   }
   agregarComentario(comentario: Comentario) {
-    if (this.lugar  && comentario) {
+    if (this.lugar  && comentario.comentario.trim() !== '') {
       this.comentariosService.insertarComentario(comentario).subscribe(
         (res) => {
           this.obtenerComentarios(this.lugar?.lugar_codigo!);
