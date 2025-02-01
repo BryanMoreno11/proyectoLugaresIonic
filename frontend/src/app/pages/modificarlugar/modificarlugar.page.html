@@ -31,12 +31,16 @@
         <ion-input [readonly]="usuario.usuario_codigo!=comentario.usuario_codigo && usuario.tipo!='admin'"  [(ngModel)]="comentario.comentario" name="comentario-{{i}}"></ion-input>
 
 
-        @if(usuario.usuario_codigo==comentario.usuario_codigo || usuario.tipo=="admin"){
           <div style="display: flex; gap: 10px; margin-top: 10px;">
-            <ion-button color="danger" (click)="eliminarComentario(i)">Eliminar</ion-button>
-            <ion-button color="primary" (click)="modificarComentario(comentario)">Modificar</ion-button>
+            @if(usuario.usuario_codigo==comentario.usuario_codigo || usuario.tipo=="admin"){
+              <ion-button color="danger" (click)="eliminarComentario(i)">Eliminar</ion-button>
+            }
+            @if(usuario.usuario_codigo==comentario.usuario_codigo){
+              <ion-button color="primary" (click)="modificarComentario(comentario)">Modificar</ion-button>
+
+            }
           </div>
-        }
+        
         
       </ion-item>
       

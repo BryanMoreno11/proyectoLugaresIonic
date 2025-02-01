@@ -113,7 +113,7 @@ export class LugaresPage implements OnInit
     this.router.navigate(['/login']);
   }
 
-  irAAdministrarUsuarios() {
+  irAdministrarUsuarios() {
     this.router.navigate(['/admin-usuarios']);
   }
 

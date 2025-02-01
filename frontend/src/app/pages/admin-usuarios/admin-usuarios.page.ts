@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonButtons, IonList, IonButton, IonIcon, IonFab, IonFabButton, ModalController } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonButtons, IonList, IonButton, IonIcon, IonFab, IonFabButton, ModalController,
+ 
+ } from '@ionic/angular/standalone';
 import { Usuario } from 'src/app/models/Usuario';
 import { UsuarioService } from 'src/app/service/usuario.service';
 import { Router } from '@angular/router';
 import { UsuarioModalPage } from '../usuario-modal/usuario-modal.page';
 import { addIcons } from 'ionicons';
-import { logOut, add } from 'ionicons/icons';
+import { logOut, add, home } from 'ionicons/icons';
+
 @Component({
   selector: 'app-admin-usuarios',
   templateUrl: './admin-usuarios.page.html',
@@ -25,9 +28,10 @@ export class AdminUsuariosPage implements OnInit {
   constructor(
     private usuarioService: UsuarioService,
     private router: Router,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+
   ) {
-    addIcons({ logOut, add });
+    addIcons({ logOut, add, home });
 
   }
 
@@ -96,4 +100,10 @@ export class AdminUsuariosPage implements OnInit {
     this.usuarioService.cerrarSesion();
     this.router.navigate(['/login']);
   }
+
+  irLugares() {
+    this.router.navigate(['/lugares']);
+  }
+
+
 }
